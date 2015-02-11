@@ -40,8 +40,8 @@
 *  `git checkout -- file`  丢弃工作区的修改（若未git add到暂存区，直接丢弃工作区的修改）
 *  `git reset HEAD file`  把暂存区的修改撤销掉，重新放回工作区（已经git add到了暂存区，先撤销放回工作区，再执行丢弃工作区修改的命令）
 *  `git rm`  删除一个文件
-*  `git remote add origin git@server-name:path/repo-name.git`   将本地仓库与远程库关联起来
-*  `git clone git@server-name:path/repo-name.git`  将远程库克隆到本地
+*  `git remote add origin git@github.com:server-name/repo-name.git`   将本地仓库与远程库关联起来
+*  `git clone git@github.com:path/repo-name.git`  将远程库克隆到本地
 *  `git push -u origin master`  第一次推送master分支的所有内容；
 *  `git push origin master`  把当前分支master推送到远程
 *  `git branch`  查看分支
@@ -72,7 +72,6 @@
 *  `git tag -d <tagname>`  删除一个本地标签
 *  `git push origin :refs/tags/<tagname>`  删除一个远程标签
 
-
 <!-- markdown end -->
 </div>
 <div class="entry" id="main">
@@ -91,8 +90,8 @@
 <li><code>git checkout -- file</code>  丢弃工作区的修改（若未git add到暂存区，直接丢弃工作区的修改）</li>
 <li><code>git reset HEAD file</code>  把暂存区的修改撤销掉，重新放回工作区（已经git add到了暂存区，先撤销放回工作区，再执行丢弃工作区修改的命令）</li>
 <li><code>git rm</code>  删除一个文件</li>
-<li><code>git remote add origin git@server-name:path/repo-name.git</code>   将本地仓库与远程库关联起来</li>
-<li><code>git clone git@server-name:path/repo-name.git</code>  将远程库克隆到本地</li>
+<li><code>git remote add origin git@github.com:server-name/repo-name.git</code>   将本地仓库与远程库关联起来</li>
+<li><code>git clone git@github.com:path/repo-name.git</code>  将远程库克隆到本地</li>
 <li><code>git push -u origin master</code>  第一次推送master分支的所有内容；</li>
 <li><code>git push origin master</code>  把当前分支master推送到远程</li>
 <li><code>git branch</code>  查看分支</li>
