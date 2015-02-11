@@ -1,0 +1,198 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+#git备忘录
+
+*  `git init`  初始化一个Git仓库
+*  `git add <file>`  文件添加到仓库（实际上就是把文件修改添加到暂存区；）
+*  `git commit -m "xx"` 把文件提交到仓库（实际上就是把暂存区的所有内容提交到当前分支）
+*  `git status`   仓库当前的状态
+*  `git diff`  查看修改内容
+*  `git log`  查看从最近到最远的提交日志（嫌输出信息太多，可以加上  --pretty=oneline 参数）
+*  `HEAD`  指当前版本（上一个版本就是HEAD^，上上一个版本就是HEAD^^，100个版本可写成HEAD~100）
+*  `git reset --hard commit_id`   在版本的历史之间穿梭
+*  `git reflog`  查看命令历史，可重返未来的版本
+*  `git diff HEAD -- <file>`  查看工作区和版本库里面最新版本的区别
+*  `git checkout -- file`  丢弃工作区的修改（若未git add到暂存区，直接丢弃工作区的修改）
+*  `git reset HEAD file`  把暂存区的修改撤销掉，重新放回工作区（已经git add到了暂存区，先撤销放回工作区，再执行丢弃工作区修改的命令）
+*  `git rm`  删除一个文件
+*  `git remote add origin git@server-name:path/repo-name.git`   将本地仓库与远程库关联起来
+*  `git clone git@server-name:path/repo-name.git`  将远程库克隆到本地
+*  `git push -u origin master`  第一次推送master分支的所有内容；
+*  `git push origin master`  把当前分支master推送到远程
+*  `git branch`  查看分支
+*  `git branch <name>`  创建分支
+*  `git checkout <name>`  切换分支
+*  `git checkout -b <name>` 创建+切换分支
+*  `git merge <name>`  合并某分支到当前分支（启用Fast forward模式，删除分支后，会丢掉分支信息）
+*  `git merge --no-ff <name> `  合并某分支到当前分支（启用普通模式，合并后的历史有分支，能看出来曾经做过合并）
+*  `git branch -d <name>` 删除分支
+*  `git log --graph`  查看分支合并图
+*  `git stash`   当前工作现场“储藏”起来，等以后恢复现场后继续工作
+*  `git stash list `  查看被‘储藏’的工作现场
+*  `git stash apply`   恢复被‘储藏’的工作现场
+*  `git stash drop`   删除被‘储藏’的工作现场
+*  `git stash pop`   恢复+删除被‘储藏’的工作现场
+*  `git branch -D <name>`  强行删除丢弃一个没有被合并过的分支
+*  `git remote`  查看远程库的信息
+*  `git remote -v`  显示远程库更详细的信息
+*  `git push origin branch-name`  推送分支，就是把该分支上的所有本地提交推送到远程库。
+*  `git checkout -b branch-name origin/branch-name`  在本地创建和远程分支对应的分支
+*  `git branch --set-upstream branch-name origin/branch-name`  指定本地分支与远程分支的链接（链接关系没有创建会提示“no tracking information”）
+*  `git pull`  把最新的提交从远程库origin抓下来
+*  `git tag <name>`  用 于新建一个标签，默认为HEAD，也可以指定一个commit id；
+*  `git tag `  查看所有标签
+*  `git show <tagname>`  查看标签信息
+*  `git push origin <tagname> `  推送一个本地标签
+*  `git push origin --tags`  推送全部未推送过的本地标签
+*  `git tag -d <tagname>`  删除一个本地标签
+*  `git push origin :refs/tags/<tagname>`  删除一个远程标签
+
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<h1 id="git">git备忘录</h1>
+
+<ul>
+<li><code>git init</code>  初始化一个Git仓库</li>
+<li><code>git add &lt;file&gt;</code>  文件添加到仓库（实际上就是把文件修改添加到暂存区；）</li>
+<li><code>git commit -m "xx"</code> 把文件提交到仓库（实际上就是把暂存区的所有内容提交到当前分支）</li>
+<li><code>git status</code>   仓库当前的状态</li>
+<li><code>git diff</code>  查看修改内容</li>
+<li><code>git log</code>  查看从最近到最远的提交日志（嫌输出信息太多，可以加上  --pretty=oneline 参数）</li>
+<li><code>HEAD</code>  指当前版本（上一个版本就是HEAD^，上上一个版本就是HEAD^^，100个版本可写成HEAD~100）</li>
+<li><code>git reset --hard commit_id</code>   在版本的历史之间穿梭</li>
+<li><code>git reflog</code>  查看命令历史，可重返未来的版本</li>
+<li><code>git diff HEAD -- &lt;file&gt;</code>  查看工作区和版本库里面最新版本的区别</li>
+<li><code>git checkout -- file</code>  丢弃工作区的修改（若未git add到暂存区，直接丢弃工作区的修改）</li>
+<li><code>git reset HEAD file</code>  把暂存区的修改撤销掉，重新放回工作区（已经git add到了暂存区，先撤销放回工作区，再执行丢弃工作区修改的命令）</li>
+<li><code>git rm</code>  删除一个文件</li>
+<li><code>git remote add origin git@server-name:path/repo-name.git</code>   将本地仓库与远程库关联起来</li>
+<li><code>git clone git@server-name:path/repo-name.git</code>  将远程库克隆到本地</li>
+<li><code>git push -u origin master</code>  第一次推送master分支的所有内容；</li>
+<li><code>git push origin master</code>  把当前分支master推送到远程</li>
+<li><code>git branch</code>  查看分支</li>
+<li><code>git branch &lt;name&gt;</code>  创建分支</li>
+<li><code>git checkout &lt;name&gt;</code>  切换分支</li>
+<li><code>git checkout -b &lt;name&gt;</code> 创建+切换分支</li>
+<li><code>git merge &lt;name&gt;</code>  合并某分支到当前分支（启用Fast forward模式，删除分支后，会丢掉分支信息）</li>
+<li><code>git merge --no-ff &lt;name&gt;</code>  合并某分支到当前分支（启用普通模式，合并后的历史有分支，能看出来曾经做过合并）</li>
+<li><code>git branch -d &lt;name&gt;</code> 删除分支</li>
+<li><code>git log --graph</code>  查看分支合并图</li>
+<li><code>git stash</code>   当前工作现场“储藏”起来，等以后恢复现场后继续工作</li>
+<li><code>git stash list</code>  查看被‘储藏’的工作现场</li>
+<li><code>git stash apply</code>   恢复被‘储藏’的工作现场</li>
+<li><code>git stash drop</code>   删除被‘储藏’的工作现场</li>
+<li><code>git stash pop</code>   恢复+删除被‘储藏’的工作现场</li>
+<li><code>git branch -D &lt;name&gt;</code>  强行删除丢弃一个没有被合并过的分支</li>
+<li><code>git remote</code>  查看远程库的信息</li>
+<li><code>git remote -v</code>  显示远程库更详细的信息</li>
+<li><code>git push origin branch-name</code>  推送分支，就是把该分支上的所有本地提交推送到远程库。</li>
+<li><code>git checkout -b branch-name origin/branch-name</code>  在本地创建和远程分支对应的分支</li>
+<li><code>git branch --set-upstream branch-name origin/branch-name</code>  指定本地分支与远程分支的链接（链接关系没有创建会提示“no tracking information”）</li>
+<li><code>git pull</code>  把最新的提交从远程库origin抓下来</li>
+<li><code>git tag &lt;name&gt;</code>  用 于新建一个标签，默认为HEAD，也可以指定一个commit id；</li>
+<li><code>git tag</code>  查看所有标签</li>
+<li><code>git show &lt;tagname&gt;</code>  查看标签信息</li>
+<li><code>git push origin &lt;tagname&gt;</code>  推送一个本地标签</li>
+<li><code>git push origin --tags</code>  推送全部未推送过的本地标签</li>
+<li><code>git tag -d &lt;tagname&gt;</code>  删除一个本地标签</li>
+<li><code>git push origin :refs/tags/&lt;tagname&gt;</code>  删除一个远程标签</li>
+</ul>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "git.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>
