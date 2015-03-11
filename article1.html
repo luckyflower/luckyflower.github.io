@@ -27,12 +27,14 @@
 <!-- markdown -->
 css跨浏览器图像灰度：就是用css将图片变成灰色的几种兼容方法。
 
-1，IE10以下的浏览器可以用IE私有滤镜方式
+**1，IE10以下的浏览器可以用IE私有滤镜方式**
+```
 img{
      filter: gray;
 }
-
-2，chrome及新一点的FF浏览器可以用css3 Filter方案，
+```
+**2，chrome及新一点的FF浏览器可以用css3 Filter方案**
+```
 img{  
      -webkit-filter: grayscale(100%);   
      -moz-filter: grayscale(100%);  
@@ -40,76 +42,84 @@ img{
      -o-filter: grayscale(100%);  
      filter: grayscale(100%);   
 }  
-支持率如下图：
-
-
-3，FF浏览器可以使用SVG  effects for HTML
- 首先在一个SVG里声明滤镜：（可内嵌到HTML文件中，也可单独保存）
+```
+**3，FF浏览器可以使用SVG  effects for HTML**
+ 
+首先在一个SVG里声明滤镜：（可内嵌到HTML文件中，也可单独保存）
+``` 
 <svg xmlns="http://www.w3.org/2000/svg">  
      <filter id="grayscale">  
           <feColorMatrix type="matrix" values="0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0"/>  
      </filter>  
 </svg>  
-
+```
 内嵌这样子引用：
+```
 img{
      filter:url('#grayscale'); /*svg滤镜内嵌入了html文件*/  
 }
-
+```
 单独保存这样子引用：
+```
 img{  
     filter:url('gray.svg#grayscale'); /*灰度滤镜放在gray.svg文件的id叫做grayscale的滤镜里*/  
 }  
+```
+**4，IE10及其以上的浏览器可以用js实现**
 
-支持率为：
-
-
-4，IE10及其以上的浏览器可以用js实现，
-具体做法可看：http://blog.csdn.net/whqet/article/details/22737149
-
+具体做法可看：[http://blog.csdn.net/whqet/article/details/22737149](http://blog.csdn.net/whqet/article/details/22737149)
 <!-- markdown end -->
 </div>
 <div class="entry" id="main">
 <!-- content -->
 <p>css跨浏览器图像灰度：就是用css将图片变成灰色的几种兼容方法。</p>
 
-<p>1，IE10以下的浏览器可以用IE私有滤镜方式
-img{
+<p><strong>1，IE10以下的浏览器可以用IE私有滤镜方式</strong></p>
+
+<pre><code>img{
      filter: gray;
-}</p>
+}
+</code></pre>
 
-<p>2，chrome及新一点的FF浏览器可以用css3 Filter方案，
-img{ <br>
-     -webkit-filter: grayscale(100%); <br>
-     -moz-filter: grayscale(100%); <br>
-     -ms-filter: grayscale(100%); <br>
-     -o-filter: grayscale(100%); <br>
-     filter: grayscale(100%); <br>
-} <br>
-支持率如下图：</p>
+<p><strong>2，chrome及新一点的FF浏览器可以用css3 Filter方案</strong></p>
 
-<p>3，FF浏览器可以使用SVG  effects for HTML
- 首先在一个SVG里声明滤镜：（可内嵌到HTML文件中，也可单独保存）
-<svg xmlns="http://www.w3.org/2000/svg"> </svg><br>
-     <filter id="grayscale"> <br>
-          <fecolormatrix type="matrix" values="0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0"></fecolormatrix> <br>
-     </filter> <br>
-  </p>
+<pre><code>img{  
+     -webkit-filter: grayscale(100%);   
+     -moz-filter: grayscale(100%);  
+     -ms-filter: grayscale(100%);  
+     -o-filter: grayscale(100%);  
+     filter: grayscale(100%);   
+}  
+</code></pre>
 
-<p>内嵌这样子引用：
-img{
-     filter:url('#grayscale'); /<em>svg滤镜内嵌入了html文件</em>/ <br>
-}</p>
+<p><strong>3，FF浏览器可以使用SVG  effects for HTML</strong></p>
 
-<p>单独保存这样子引用：
-img{ <br>
-    filter:url('gray.svg#grayscale'); /<em>灰度滤镜放在gray.svg文件的id叫做grayscale的滤镜里</em>/ <br>
-}  </p>
+<p>首先在一个SVG里声明滤镜：（可内嵌到HTML文件中，也可单独保存）</p>
 
-<p>支持率为：</p>
+<pre><code class=" ">&lt;svg xmlns="http://www.w3.org/2000/svg"&gt;  
+     &lt;filter id="grayscale"&gt;  
+          &lt;feColorMatrix type="matrix" values="0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0"/&gt;  
+     &lt;/filter&gt;  
+&lt;/svg&gt;  
+</code></pre>
 
-<p>4，IE10及其以上的浏览器可以用js实现，
-具体做法可看：http://blog.csdn.net/whqet/article/details/22737149</p>
+<p>内嵌这样子引用：</p>
+
+<pre><code>img{
+     filter:url('#grayscale'); /*svg滤镜内嵌入了html文件*/  
+}
+</code></pre>
+
+<p>单独保存这样子引用：</p>
+
+<pre><code>img{  
+    filter:url('gray.svg#grayscale'); /*灰度滤镜放在gray.svg文件的id叫做grayscale的滤镜里*/  
+}  
+</code></pre>
+
+<p><strong>4，IE10及其以上的浏览器可以用js实现</strong></p>
+
+<p>具体做法可看：<a href="http://blog.csdn.net/whqet/article/details/22737149">http://blog.csdn.net/whqet/article/details/22737149</a></p>
 <!-- content end -->
 </div>
 <br>
