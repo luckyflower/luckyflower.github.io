@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+###HTML5 history技术
+
+**首先先来看下它的API：**
+
+
+|   API  | 描述|
+| :---- |----:  |
+|`history.pushState(data, title [, url])`|往历史记录堆栈顶部添加一条记录；data会在onpopstate事件触发时作为参数传递过去；title为页面标题，当前所有浏览器都会忽略此参数；url为页面地址，可选，缺省为当前页地址。
+|`history.replaceState(data, title [, url])；`|更改当前的历史记录，参数同上。
+|`history.state`|用于存储以上方法的data数据，不同浏览器的读写权限不一样。
+|`window.onpopstate`|响应pushState或replaceState的调用；
+
+**检测浏览器是否支持History API的代码：**
+```
+function supports_history_api(){
+	return !!(window.history && history.pushState);
+}
+```
+**为什么要使用History API**
+通过其我们可以实现页面的无刷新跳转。
+
+
+首先我们先来看一下下面这几个DEMO：
+[不可无刷新跳转DEMO](http://htmlpreview.github.io/?https://github.com/luckyflower/example/blob/master/history/notest.html)
+由DEMO可以看出，当我们点击了按钮之后，如果点击返回上一步下一步操作，是直接返回这个链接的上一个页面，整个页面被刷新。
+
+[页面链接改变DEMO](http://htmlpreview.github.io/?https://github.com/luckyflower/example/blob/master/history/test1.html)
+由DEMO可以看出，当我们点击了按钮之后，点击返回上一步下一步操作，页面链接变了，但是内容却没有变化。
+
+[无刷新跳转DEMO](http://htmlpreview.github.io/?https://github.com/luckyflower/example/blob/master/history/test.html)
+由DEMO可以看出，当我们点击了按钮之后，点击返回上一步下一步操作，页面链接变了，内容也变了，但是整个页面却没有进行刷新的操作。
+
+接下来我们仔细分析一下代码：
+```
+history.pushState(...);
+```
+首先我们在点击按钮的时候，改变链接地址，并在历史记录堆栈顶部添加一条记录；
+
+```
+window.addEventListener("popstate", function() {		
+	...
+});
+```
+当页面地址发生改变时，便会触发window对象的onpopstate事件。
+
+根据这两个，我们就可以做出无刷新跳转的页面啦。
+
+[ajax无刷新页面跳转DEMO](https://github.com/luckyflower/example/blob/master/history/ajax.html)
+
+[参考文章](http://www.clanfei.com/2012/09/1646.html)
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<h3 id="html5history">HTML5 history技术</h3>
+
+<p><strong>首先先来看下它的API：</strong></p>
+
+<p>|   API  | 描述|
+| :---- |----:  |
+|<code>history.pushState(data, title [, url])</code>|往历史记录堆栈顶部添加一条记录；data会在onpopstate事件触发时作为参数传递过去；title为页面标题，当前所有浏览器都会忽略此参数；url为页面地址，可选，缺省为当前页地址。
+|<code>history.replaceState(data, title [, url])；</code>|更改当前的历史记录，参数同上。
+|<code>history.state</code>|用于存储以上方法的data数据，不同浏览器的读写权限不一样。
+|<code>window.onpopstate</code>|响应pushState或replaceState的调用；</p>
+
+<p><strong>检测浏览器是否支持History API的代码：</strong></p>
+
+<pre><code>function supports_history_api(){
+    return !!(window.history &amp;&amp; history.pushState);
+}
+</code></pre>
+
+<p><strong>为什么要使用History API</strong>
+通过其我们可以实现页面的无刷新跳转。</p>
+
+<p>首先我们先来看一下下面这几个DEMO：
+<a href="http://htmlpreview.github.io/?https://github.com/luckyflower/example/blob/master/history/notest.html">不可无刷新跳转DEMO</a>
+由DEMO可以看出，当我们点击了按钮之后，如果点击返回上一步下一步操作，是直接返回这个链接的上一个页面，整个页面被刷新。</p>
+
+<p><a href="http://htmlpreview.github.io/?https://github.com/luckyflower/example/blob/master/history/test1.html">页面链接改变DEMO</a>
+由DEMO可以看出，当我们点击了按钮之后，点击返回上一步下一步操作，页面链接变了，但是内容却没有变化。</p>
+
+<p><a href="http://htmlpreview.github.io/?https://github.com/luckyflower/example/blob/master/history/test.html">无刷新跳转DEMO</a>
+由DEMO可以看出，当我们点击了按钮之后，点击返回上一步下一步操作，页面链接变了，内容也变了，但是整个页面却没有进行刷新的操作。</p>
+
+<p>接下来我们仔细分析一下代码：</p>
+
+<pre><code>history.pushState(...);
+</code></pre>
+
+<p>首先我们在点击按钮的时候，改变链接地址，并在历史记录堆栈顶部添加一条记录；</p>
+
+<pre><code>window.addEventListener("popstate", function() {        
+    ...
+});
+</code></pre>
+
+<p>当页面地址发生改变时，便会触发window对象的onpopstate事件。</p>
+
+<p>根据这两个，我们就可以做出无刷新跳转的页面啦。</p>
+
+<p><a href="https://github.com/luckyflower/example/blob/master/history/ajax.html">ajax无刷新页面跳转DEMO</a></p>
+
+<p><a href="http://www.clanfei.com/2012/09/1646.html">参考文章</a></p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "article7.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>
