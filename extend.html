@@ -1,0 +1,482 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+读书笔记来自<a href="http://www.ituring.com.cn/minibook/950" target="_blank">《Chrome扩展及应用开发》</a>
+
+**Chrome扩展与应用的差别**
+Chrome扩展主要用于对浏览器功能的增强，它更强调与浏览器相结合。比如Chrome扩展可以在浏览器的工具栏和地址栏中显示图标，它可以更改用户当前浏览的网页中的内容，也可以更改浏览器代理服务器的设置等等。
+
+Chrome应用更强调是独立的程序，你可以不打开Chrome浏览器而运行这些程序。同时这些程序可以调用更加底层的系统接口，比如串口、USB、本地文件读写等等。同时Chrome应用可以拥有样式更加自由的独立窗口，而Chrome扩展的界面只能限定在浏览器窗口中。
+
+**Chrome扩展文件**
+Chrome扩展是一系列文件的集合，这些文件包括HTML文件、CSS样式文件、JavaScript脚本文件、图片等静态文件以及manifest.json。
+
+扩展被安装后，Chrome就会读取扩展中的manifest.json文件。这个文件的文件名固定为manifest.json，内容是按照一定格式描述的扩展相关信息，如扩展名称、版本、更新地址、请求的权限、扩展的UI界面入口等等。这样Chrome就可以知道在浏览器中如何呈现这个扩展，以及这个扩展如何同用户进行交互。
+
+**Chrome扩展如何应用**
+Chrome扩展更像是一个运行于本地的网站，只是它可以利用Chrome平台提供的丰富的接口，获得更加全面的信息，进行更加复杂的操作。而它的界面则使用HTML和CSS进行描述，这样的好处是可以用很短的时间构建出赏心悦目的UI。界面的渲染完全不需要开发者操心，而是交给Chrome去做。
+
+**如何编写Chrome应用**
+1. 先构建manifest.json文件
+Chrome扩展的Manifest必须包含`name`、`version`和`manifest_version`属性，对于应用来说，还必须包含`app`属性。
+`icons`：定义了扩展相关图标文件的位置；
+`default_icon`：定义了相应图标文件的位置，
+`default_title`：定义了当用户鼠标悬停于扩展图标上所显示的文字，
+`default_popup`：定义了当用户单击扩展图标时所显示页面的文件位置。
+
+2. 编写对应的html文件
+Chrome不允许将JavaScript代码段直接内嵌入HTML文档，所以我们需要通过`外部引入`的方式引用JS文件。
+3. 编写对应的js文件
+4. 将图标文件也放入相应的文件夹中
+5. 将扩展载入Chrome中运行
+
+**图标**
+```
+//Browser Actions可以在Manifest中设定一个默认的图标
+"browser_action": {
+    "default_icon": {
+        "19": "images/icon19.png",
+        "38": "images/icon38.png"
+    }
+}
+```
+`default_icon`也不是必须指定的，如果没有指定，Chrome将使用一个默认图标。
+
+```
+//通过setIcon方法可以动态更改扩展的图标
+chrome.browserAction.setIcon(details, callback)
+```
+其中`details`的类型为对象，可以包含三个属性，分别是`imageData`、`path`和`tabId`。
+|值|含义|
+|-|-|
+|imageData|可以是imageData，也可以是对象。如果是对象，其结构为{size: imageData}，比如{'19': imageData}，这样可以单独更换指定尺寸的图片。imageData是图片的像素数据，可以通过HTML的canvas标签获取到|
+|path|可以是字符串，也可以是对象。如果是对象，结构为{size: imagePath}。imagePath为图片在扩展根目录下的相对位置|
+|tabId|限定了浏览哪个标签页时，图标将被更改。|
+
+**Popup页面**
+Popup页面是当用户点击扩展图标时，展示在图标下面的页面。
+Popup页面提供了一个简单便捷的UI接口。
+popup页面关闭后，就相当于用户关闭了相应的标签页，这个页面不会继续运行。当用户再次打开这个页面时，所有的DOM和js空间变量都将被重新创建。
+所以，popup页面更多地是用来`作为结果的展示`，而不是数据的处理。
+通常情况下，如果需要扩展实时处理数据，而不是只在用户打开时才运行，我们`需要创建一个在后端一直运行的页面或者脚本，这可以通过manifest.json的background域来声明`，而popup页面获取后端运行的结果，可以通过扩展内部的通信接口来完成。
+
+**标题和badge**
+browser_action的default_title属性可以设置扩展的默认标题：
+```
+"browser_action": {
+    "default_title": "Extension Title"
+}
+```
+```
+//用JavaScript来动态更改扩展的标题
+chrome.browserAction.setTitle({title: 'This is a new title'});
+```
+
+badge只能显示4字节长度的内容。对于内容类的扩展，当用户未读条目足够多时，一般采用的解决方法是显示“999+”。
+Badge目前只能够通过JavaScript设定显示的内容，同时Chrome还提供了更改badge背景的方法。如果不定义badge的背景颜色，默认将使用红色。
+```
+//下面的代码显示了一个背景颜色为蓝色，内容为“Dog”的badge：
+chrome.browserAction.setBadgeBackgroundColor({color: '#0000FF'});
+chrome.browserAction.setBadgeText({text: 'Dog'});
+```
+
+
+**JSON**
+JSON是JavaScript Object Notation的缩写，这是一种基于JavaScript语言的轻量级数据交换格式。
+```json
+ {
+    "name" : "Harry Potter",
+    "author" : {
+        "name" : "J.K.Rowling",
+        "birth" : 1964
+    },
+    "books" : [
+        "Harry Potter and the Philosopher's Stone",
+        "Harry Potter and the Deathly Hallows"
+    ]
+}
+```
+
+**content_scripts**
+`Manifest`中的`content_scripts`属性可以指定将哪些脚本何时注入到哪些页面中，当用户访问这些页面后，相应脚本即可自动运行，从而对页面DOM进行操作。
+`content_scripts`属性值为数组类型，数组的每个元素及其含义如下表：
+|属性|含义|
+|-|-|
+|matches|定义了哪些页面会被注入脚本|
+|exclude_matches|定义了哪些页面不会被注入脚本|
+|include_globs|全局URL匹配|
+|exclude_globs|全局URL匹配|
+|css|对应要注入的样式表|
+|js|对应要注入的JavaScript|
+|run_at|定义了何时进行注入|
+|all_frames|义脚本是否会注入到嵌入式框架中|
+
+若URL匹配matches && include_globs，则被注入；
+若URL匹配exclude_matches || exclude_globs ，则不会被注入。
+
+`content_scripts`中的脚本只是共享页面的`DOM`，而并不共享页面内嵌JavaScript的命名空间。也就是说，如果当前页面中的JavaScript有一个全局变量a，`content_scripts`中注入的脚本也可以有一个全局变量a，两者不会相互干扰。当然你也无法通过`content_scripts`访问到页面本身内嵌JavaScript的变量和函数。
+
+**跨域请求**
+跨域指的是JavaScript通过`XMLHttpRequest`请求数据时，调用JavaScript的页面所在的域和被请求页面的域不一致。对于网站来说，浏览器出于安全考虑是不允许跨域。另外，对于域相同，但端口或协议不同时，浏览器也是禁止的。
+
+但这个规则如果同样限制Chrome扩展应用，就会使其能力大打折扣，所以Google允许Chrome扩展应用不必受限于跨域限制。但出于安全考虑，`需要在Manifest的permissions属性中声明需要跨域的权限`。
+
+作为一个开发者，安全问题永远都不应被轻视。在你从外域获取到数据后，不要轻易作为当前页面元素的innerHTML直接插入，更不要用eval函数去执行它，否则很可能将用户置于危险的境地。如果要将请求到的数据写入页面，可以使用innerText。如果是JSON格式是数据就使用JSON.parse函数去解析。为了避免请求数据返回的格式错误，结合try-catch一起使用也是不错的选择。
+
+```
+{   ...
+    "permissions": [
+        "*://*.wikipedia.org/*"
+    ]
+}
+//比如，如果我们想设计一款获取维基百科数据并显示在其他网页中的扩展，就要在Manifest中进行声明
+```
+
+**常驻后台**
+Chrome允许扩展应用在后台常驻一个页面以实现这样的功能。在一些典型的扩展中，UI页面，如popup页面或者options页面，在需要更新一些状态时，会向后台页面请求数据，而当后台页面检测到状态发生改变时，也会通知UI界面刷新。
+在Manifest中指定`background域`可以使扩展常驻后台。
+`background`可以包含三种属性，如下表：
+|属性|含义|
+|-|-|
+|scripts|Chrome会在扩展启动时自动创建一个包含所有指定脚本的页面|
+|page|Chrome会将指定的HTML文件作为后台页面运行|
+|persistent|定义了常驻后台的方式，ture表示扩展将一直在后台运行，false表示扩展在后台按需运行，|
+
+通常我们只需要使用`scripts`属性即可，除非在后台页面中需要构建特殊的HTML——但一般情况下后台页面的HTML我们是看不到的。
+
+Event Page可以有效减小扩展对内存的消耗，如非必要，请将`persistent`设置为false。persistent的默认值为true。
+
+小提示：如果想在用户打开浏览器之前就让扩展运行，可以在Manifest的permissions属性中加入"background"，但除非必要，否则尽量不要这么做，因为大部分用户不喜欢这样。
+
+**带选项页面的扩展**
+Chrome通过Manifest文件的`options_page属性`为开发者提供了这样的接口，可以`为扩展指定一个选项页面`。
+
+对于网站来说，用户的设置通常保存在Cookies中，或者保存在网站服务器的数据库中。我们可以使用HTML5新增的`localStorage接口`保存用户在扩展中的设置。
+
+localStorage是HTML5新增的方法，它允许JavaScript在用户计算机硬盘上永久储存数据（除非用户主动删除）。但localStorage也有一些限制：
+1. 首先是localStorage和Cookies类似，都有域的限制，运行在不同域的JavaScript无法调用其他域localStorage的数据；
+2. 其次是单个域在localStorage中存储数据的大小通常有限制（虽然W3C没有给出限制），对于Chrome这个限制是`5MB`（通过声明`unlimitedStorage权限`，Chrome扩展和应用可以突破这一限制。）；
+3. 最后localStorage只能储存字符串型的数据，无法保存数组和对象，但可以通过`join`、`toString`和`JSON.stringify`等方法先转换成字符串再储存。
+
+
+**扩展页面间的通信**
+有时需要让扩展中的多个页面之间，或者不同扩展的多个页面之间相互传输数据，以获得彼此的状态。
+Chrome提供了4个有关扩展页面间相互通信的接口，分别是`runtime.sendMessage`、`runtime.onMessage`、`runtime.connect`和`runtime.onConnect`。
+
+```
+//`runtime.sendMessage`完整的方法为：
+chrome.runtime.sendMessage(extensionId, message, options, callback)
+```
+|值|含义|
+|-|-|
+|extensionId|所发送消息的目标扩展，如果不指定这个值，则默认为发起此消息的扩展本身|
+|message|要发送的内容，类型随意，内容随意|
+|options|对象类型，包含一个值为布尔型的`includeTlsChannelId属性`，此属性的值决定扩展发起此消息时是否要将TLS通道ID发送给监听此消息的外部扩展|
+|callback|用于接收返回结果|
+
+```
+//`runtime.onMessage`完整的方法为：
+chrome.runtime.onMessage.addListener(callback)
+```
+此处的callback为必选参数，为回调函数，其接收的参数有是哪个，如下：
+|值|含义|
+|-|-|
+|message|消息内容|
+|sender|消息发送者相关信息，包含4个属性，分别是`tab`(发起消息的标签)、`id`、`url`和`tlsChannelId`|
+|sendResponse|相应函数|
+
+**储存数据**
+1. 使用HTML5的localStorage
+2. 使用Chrome提供的存储API
+	需要异步调用Chrome的API，结果需要使用回调函数接收
+3. 使用Web SQL Database
+需要使用SQL语句对数据库进行读写操作，较前两者更加复杂，但是对于数据量庞大的应用来说是个不错的选择
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>读书笔记来自<a href="http://www.ituring.com.cn/minibook/950" target="_blank">《Chrome扩展及应用开发》</a></p>
+
+<p><strong>Chrome扩展与应用的差别</strong>
+Chrome扩展主要用于对浏览器功能的增强，它更强调与浏览器相结合。比如Chrome扩展可以在浏览器的工具栏和地址栏中显示图标，它可以更改用户当前浏览的网页中的内容，也可以更改浏览器代理服务器的设置等等。</p>
+
+<p>Chrome应用更强调是独立的程序，你可以不打开Chrome浏览器而运行这些程序。同时这些程序可以调用更加底层的系统接口，比如串口、USB、本地文件读写等等。同时Chrome应用可以拥有样式更加自由的独立窗口，而Chrome扩展的界面只能限定在浏览器窗口中。</p>
+
+<p><strong>Chrome扩展文件</strong>
+Chrome扩展是一系列文件的集合，这些文件包括HTML文件、CSS样式文件、JavaScript脚本文件、图片等静态文件以及manifest.json。</p>
+
+<p>扩展被安装后，Chrome就会读取扩展中的manifest.json文件。这个文件的文件名固定为manifest.json，内容是按照一定格式描述的扩展相关信息，如扩展名称、版本、更新地址、请求的权限、扩展的UI界面入口等等。这样Chrome就可以知道在浏览器中如何呈现这个扩展，以及这个扩展如何同用户进行交互。</p>
+
+<p><strong>Chrome扩展如何应用</strong>
+Chrome扩展更像是一个运行于本地的网站，只是它可以利用Chrome平台提供的丰富的接口，获得更加全面的信息，进行更加复杂的操作。而它的界面则使用HTML和CSS进行描述，这样的好处是可以用很短的时间构建出赏心悦目的UI。界面的渲染完全不需要开发者操心，而是交给Chrome去做。</p>
+
+<p><strong>如何编写Chrome应用</strong>
+1. 先构建manifest.json文件
+Chrome扩展的Manifest必须包含<code>name</code>、<code>version</code>和<code>manifest_version</code>属性，对于应用来说，还必须包含<code>app</code>属性。
+<code>icons</code>：定义了扩展相关图标文件的位置；
+<code>default_icon</code>：定义了相应图标文件的位置，
+<code>default_title</code>：定义了当用户鼠标悬停于扩展图标上所显示的文字，
+<code>default_popup</code>：定义了当用户单击扩展图标时所显示页面的文件位置。</p>
+
+<ol>
+<li>编写对应的html文件
+Chrome不允许将JavaScript代码段直接内嵌入HTML文档，所以我们需要通过<code>外部引入</code>的方式引用JS文件。</li>
+<li>编写对应的js文件</li>
+<li>将图标文件也放入相应的文件夹中</li>
+<li>将扩展载入Chrome中运行</li>
+</ol>
+
+<p><strong>图标</strong></p>
+
+<pre><code>//Browser Actions可以在Manifest中设定一个默认的图标
+"browser_action": {
+    "default_icon": {
+        "19": "images/icon19.png",
+        "38": "images/icon38.png"
+    }
+}
+</code></pre>
+
+<p><code>default_icon</code>也不是必须指定的，如果没有指定，Chrome将使用一个默认图标。</p>
+
+<pre><code>//通过setIcon方法可以动态更改扩展的图标
+chrome.browserAction.setIcon(details, callback)
+</code></pre>
+
+<p>其中<code>details</code>的类型为对象，可以包含三个属性，分别是<code>imageData</code>、<code>path</code>和<code>tabId</code>。
+|值|含义|
+|-|-|
+|imageData|可以是imageData，也可以是对象。如果是对象，其结构为{size: imageData}，比如{'19': imageData}，这样可以单独更换指定尺寸的图片。imageData是图片的像素数据，可以通过HTML的canvas标签获取到|
+|path|可以是字符串，也可以是对象。如果是对象，结构为{size: imagePath}。imagePath为图片在扩展根目录下的相对位置|
+|tabId|限定了浏览哪个标签页时，图标将被更改。|</p>
+
+<p><strong>Popup页面</strong>
+Popup页面是当用户点击扩展图标时，展示在图标下面的页面。
+Popup页面提供了一个简单便捷的UI接口。
+popup页面关闭后，就相当于用户关闭了相应的标签页，这个页面不会继续运行。当用户再次打开这个页面时，所有的DOM和js空间变量都将被重新创建。
+所以，popup页面更多地是用来<code>作为结果的展示</code>，而不是数据的处理。
+通常情况下，如果需要扩展实时处理数据，而不是只在用户打开时才运行，我们<code>需要创建一个在后端一直运行的页面或者脚本，这可以通过manifest.json的background域来声明</code>，而popup页面获取后端运行的结果，可以通过扩展内部的通信接口来完成。</p>
+
+<p><strong>标题和badge</strong>
+browser<em>action的default</em>title属性可以设置扩展的默认标题：</p>
+
+<pre><code>"browser_action": {
+    "default_title": "Extension Title"
+}
+</code></pre>
+
+<pre><code>//用JavaScript来动态更改扩展的标题
+chrome.browserAction.setTitle({title: 'This is a new title'});
+</code></pre>
+
+<p>badge只能显示4字节长度的内容。对于内容类的扩展，当用户未读条目足够多时，一般采用的解决方法是显示“999+”。
+Badge目前只能够通过JavaScript设定显示的内容，同时Chrome还提供了更改badge背景的方法。如果不定义badge的背景颜色，默认将使用红色。</p>
+
+<pre><code>//下面的代码显示了一个背景颜色为蓝色，内容为“Dog”的badge：
+chrome.browserAction.setBadgeBackgroundColor({color: '#0000FF'});
+chrome.browserAction.setBadgeText({text: 'Dog'});
+</code></pre>
+
+<p><strong>JSON</strong>
+JSON是JavaScript Object Notation的缩写，这是一种基于JavaScript语言的轻量级数据交换格式。</p>
+
+<pre><code class="json"> {
+    "name" : "Harry Potter",
+    "author" : {
+        "name" : "J.K.Rowling",
+        "birth" : 1964
+    },
+    "books" : [
+        "Harry Potter and the Philosopher's Stone",
+        "Harry Potter and the Deathly Hallows"
+    ]
+}
+</code></pre>
+
+<p><strong>content<em>scripts</em></strong><em>
+<code>Manifest</code>中的<code>content_scripts</code>属性可以指定将哪些脚本何时注入到哪些页面中，当用户访问这些页面后，相应脚本即可自动运行，从而对页面DOM进行操作。
+<code>content_scripts</code>属性值为数组类型，数组的每个元素及其含义如下表：
+|属性|含义|
+|-|-|
+|matches|定义了哪些页面会被注入脚本|
+|exclude</em>matches|定义了哪些页面不会被注入脚本|
+|include<em>globs|全局URL匹配|
+|exclude</em>globs|全局URL匹配|
+|css|对应要注入的样式表|
+|js|对应要注入的JavaScript|
+|run<em>at|定义了何时进行注入|
+|all</em>frames|义脚本是否会注入到嵌入式框架中|</p>
+
+<p>若URL匹配matches &amp;&amp; include<em>globs，则被注入；
+若URL匹配exclude</em>matches || exclude_globs ，则不会被注入。</p>
+
+<p><code>content_scripts</code>中的脚本只是共享页面的<code>DOM</code>，而并不共享页面内嵌JavaScript的命名空间。也就是说，如果当前页面中的JavaScript有一个全局变量a，<code>content_scripts</code>中注入的脚本也可以有一个全局变量a，两者不会相互干扰。当然你也无法通过<code>content_scripts</code>访问到页面本身内嵌JavaScript的变量和函数。</p>
+
+<p><strong>跨域请求</strong>
+跨域指的是JavaScript通过<code>XMLHttpRequest</code>请求数据时，调用JavaScript的页面所在的域和被请求页面的域不一致。对于网站来说，浏览器出于安全考虑是不允许跨域。另外，对于域相同，但端口或协议不同时，浏览器也是禁止的。</p>
+
+<p>但这个规则如果同样限制Chrome扩展应用，就会使其能力大打折扣，所以Google允许Chrome扩展应用不必受限于跨域限制。但出于安全考虑，<code>需要在Manifest的permissions属性中声明需要跨域的权限</code>。</p>
+
+<p>作为一个开发者，安全问题永远都不应被轻视。在你从外域获取到数据后，不要轻易作为当前页面元素的innerHTML直接插入，更不要用eval函数去执行它，否则很可能将用户置于危险的境地。如果要将请求到的数据写入页面，可以使用innerText。如果是JSON格式是数据就使用JSON.parse函数去解析。为了避免请求数据返回的格式错误，结合try-catch一起使用也是不错的选择。</p>
+
+<pre><code>{   ...
+    "permissions": [
+        "*://*.wikipedia.org/*"
+    ]
+}
+//比如，如果我们想设计一款获取维基百科数据并显示在其他网页中的扩展，就要在Manifest中进行声明
+</code></pre>
+
+<p><strong>常驻后台</strong>
+Chrome允许扩展应用在后台常驻一个页面以实现这样的功能。在一些典型的扩展中，UI页面，如popup页面或者options页面，在需要更新一些状态时，会向后台页面请求数据，而当后台页面检测到状态发生改变时，也会通知UI界面刷新。
+在Manifest中指定<code>background域</code>可以使扩展常驻后台。
+<code>background</code>可以包含三种属性，如下表：
+|属性|含义|
+|-|-|
+|scripts|Chrome会在扩展启动时自动创建一个包含所有指定脚本的页面|
+|page|Chrome会将指定的HTML文件作为后台页面运行|
+|persistent|定义了常驻后台的方式，ture表示扩展将一直在后台运行，false表示扩展在后台按需运行，|</p>
+
+<p>通常我们只需要使用<code>scripts</code>属性即可，除非在后台页面中需要构建特殊的HTML——但一般情况下后台页面的HTML我们是看不到的。</p>
+
+<p>Event Page可以有效减小扩展对内存的消耗，如非必要，请将<code>persistent</code>设置为false。persistent的默认值为true。</p>
+
+<p>小提示：如果想在用户打开浏览器之前就让扩展运行，可以在Manifest的permissions属性中加入"background"，但除非必要，否则尽量不要这么做，因为大部分用户不喜欢这样。</p>
+
+<p><strong>带选项页面的扩展</strong>
+Chrome通过Manifest文件的<code>options_page属性</code>为开发者提供了这样的接口，可以<code>为扩展指定一个选项页面</code>。</p>
+
+<p>对于网站来说，用户的设置通常保存在Cookies中，或者保存在网站服务器的数据库中。我们可以使用HTML5新增的<code>localStorage接口</code>保存用户在扩展中的设置。</p>
+
+<p>localStorage是HTML5新增的方法，它允许JavaScript在用户计算机硬盘上永久储存数据（除非用户主动删除）。但localStorage也有一些限制：
+1. 首先是localStorage和Cookies类似，都有域的限制，运行在不同域的JavaScript无法调用其他域localStorage的数据；
+2. 其次是单个域在localStorage中存储数据的大小通常有限制（虽然W3C没有给出限制），对于Chrome这个限制是<code>5MB</code>（通过声明<code>unlimitedStorage权限</code>，Chrome扩展和应用可以突破这一限制。）；
+3. 最后localStorage只能储存字符串型的数据，无法保存数组和对象，但可以通过<code>join</code>、<code>toString</code>和<code>JSON.stringify</code>等方法先转换成字符串再储存。</p>
+
+<p><strong>扩展页面间的通信</strong>
+有时需要让扩展中的多个页面之间，或者不同扩展的多个页面之间相互传输数据，以获得彼此的状态。
+Chrome提供了4个有关扩展页面间相互通信的接口，分别是<code>runtime.sendMessage</code>、<code>runtime.onMessage</code>、<code>runtime.connect</code>和<code>runtime.onConnect</code>。</p>
+
+<pre><code>//`runtime.sendMessage`完整的方法为：
+chrome.runtime.sendMessage(extensionId, message, options, callback)
+</code></pre>
+
+<p>|值|含义|
+|-|-|
+|extensionId|所发送消息的目标扩展，如果不指定这个值，则默认为发起此消息的扩展本身|
+|message|要发送的内容，类型随意，内容随意|
+|options|对象类型，包含一个值为布尔型的<code>includeTlsChannelId属性</code>，此属性的值决定扩展发起此消息时是否要将TLS通道ID发送给监听此消息的外部扩展|
+|callback|用于接收返回结果|</p>
+
+<pre><code>//`runtime.onMessage`完整的方法为：
+chrome.runtime.onMessage.addListener(callback)
+</code></pre>
+
+<p>此处的callback为必选参数，为回调函数，其接收的参数有是哪个，如下：
+|值|含义|
+|-|-|
+|message|消息内容|
+|sender|消息发送者相关信息，包含4个属性，分别是<code>tab</code>(发起消息的标签)、<code>id</code>、<code>url</code>和<code>tlsChannelId</code>|
+|sendResponse|相应函数|</p>
+
+<p><strong>储存数据</strong>
+1. 使用HTML5的localStorage
+2. 使用Chrome提供的存储API
+    需要异步调用Chrome的API，结果需要使用回调函数接收
+3. 使用Web SQL Database
+需要使用SQL语句对数据库进行读写操作，较前两者更加复杂，但是对于数据量庞大的应用来说是个不错的选择</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "extend.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>
