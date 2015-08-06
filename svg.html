@@ -1,0 +1,271 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+##两个属性
+###stroke-dasharray
+
+`stroke-dasharray`:在SVG中表示描边是虚线，
+可选值为：`none`, `<dasharray>`, `inherit`. 其中，`none`表示不是虚线；`<dasharray>`为一个逗号或空格分隔的数值列表,两个值，第一个是虚线的宽度，第二个是虚线之间的间距。表示各个虚线端的长度。可以是固定的长度值，也可以是百分比值；`inherit`表继承。
+
+###stroke-dashoffset
+
+`stroke-dashoffset`:表示虚线的起始偏移。可选值为：`<percentage>`, `<length>`,` inherit`. 百分比值，长度值，继承。
+
+
+示例：
+``` 
+<line stroke-dasharray="5, 5"  x1="10" y1="10" x2="190" y2="10" />
+<line stroke-dasharray="5, 10"  x1="10" y1="30" x2="190" y2="30" />
+<line stroke-dasharray="15, 10, 5" x1="10" y1="130" x2="190" y2="130" />
+<line stroke-dasharray="15, 10, 5, 10"  x1="10" y1="150" x2="190" y2="150" />
+```
+
+<svg width="200" height="80" >
+<line stroke-dasharray="5, 5"  x1="10" y1="10" x2="190" y2="10"  stroke="black" />
+<line stroke-dasharray="5, 10"  x1="10" y1="30" x2="190" y2="30"  stroke="black" />
+<line stroke-dasharray="15, 10, 5"   x1="10" y1="50" x2="190" y2="50"  stroke="black" />
+<line stroke-dasharray="15, 10, 5, 10"     x1="10" y1="70" x2="190" y2="70" stroke="black" />
+</svg>
+
+***
+##路径的长度
+如果您想知道路径，或线条的准确长度，可以借助JavaScript获取，如下面的代码：
+```
+var path = document.querySelector('path');
+var length = path.getTotalLength();
+```
+***
+##制作svg的ps插件
+将ps中的矢量文件导出为svg格式文件：
+[https://github.com/janily/svgartisan](https://github.com/janily/svgartisan)
+
+
+***
+##案例
+```
+.path{
+	stroke-dashoffset: 660;
+	stroke-dasharray: 660;
+	animation:draw 4s linear infinite;
+}
+@keyframes draw{
+	100% {
+		stroke-dashoffset: 0;
+	}
+}
+```
+<svg height="179px" width="300px">
+		<path class="path"   stroke-linecap="butt" stroke-linejoin="miter"  d="M104.452,55.015 C77.473,0 0.78399999999999,12.836 0.279,76.689 C0,111.758 36.797,124.867 61.297,138.887 C85.053,152.483 101.961,171.082 104.611,179 C106.879,171.242 125.712,152.117 147.703,138.506 C171.749,123.625 209,111.377 208.72,76.308 C208.213,12.297 130.191,2.19399999999999 104.452,55.015 Z "/>
+</svg>
+<style>
+		.path{
+		  	stroke-dashoffset: 660;
+			stroke-dasharray: 660;
+		  	width: 100%;
+		  	stroke: pink;
+		  	stroke-width: 2px;
+		  	fill: none;
+		  	animation:draw 4s linear infinite;
+		}
+		@keyframes draw{
+			100% {
+				stroke-dashoffset: 0;
+				}
+			}
+	</style>
+
+[DEMO1](http://cssdeck.com/labs/ironman-svg-line-animation)
+[DEMO2](http://output.jsbin.com/lafaqi/1/)
+***
+##兼容性
+
+IE10+下没有动画效果，animation中不支持stroke相关属性的动画。
+
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<h2 id="">两个属性</h2>
+
+<h3 id="strokedasharray">stroke-dasharray</h3>
+
+<p><code>stroke-dasharray</code>:在SVG中表示描边是虚线，
+可选值为：<code>none</code>, <code>&lt;dasharray&gt;</code>, <code>inherit</code>. 其中，<code>none</code>表示不是虚线；<code>&lt;dasharray&gt;</code>为一个逗号或空格分隔的数值列表,两个值，第一个是虚线的宽度，第二个是虚线之间的间距。表示各个虚线端的长度。可以是固定的长度值，也可以是百分比值；<code>inherit</code>表继承。</p>
+
+<h3 id="strokedashoffset">stroke-dashoffset</h3>
+
+<p><code>stroke-dashoffset</code>:表示虚线的起始偏移。可选值为：<code>&lt;percentage&gt;</code>, <code>&lt;length&gt;</code>,<code>inherit</code>. 百分比值，长度值，继承。</p>
+
+<p>示例：</p>
+
+<pre><code class=" ">&lt;line stroke-dasharray="5, 5"  x1="10" y1="10" x2="190" y2="10" /&gt;
+&lt;line stroke-dasharray="5, 10"  x1="10" y1="30" x2="190" y2="30" /&gt;
+&lt;line stroke-dasharray="15, 10, 5" x1="10" y1="130" x2="190" y2="130" /&gt;
+&lt;line stroke-dasharray="15, 10, 5, 10"  x1="10" y1="150" x2="190" y2="150" /&gt;
+</code></pre>
+
+<p><svg width="200" height="80">
+<line stroke-dasharray="5, 5" x1="10" y1="10" x2="190" y2="10" stroke="black"></line>
+<line stroke-dasharray="5, 10" x1="10" y1="30" x2="190" y2="30" stroke="black"></line>
+<line stroke-dasharray="15, 10, 5" x1="10" y1="50" x2="190" y2="50" stroke="black"></line>
+<line stroke-dasharray="15, 10, 5, 10" x1="10" y1="70" x2="190" y2="70" stroke="black"></line>
+</svg></p>
+
+<hr>
+
+<h2 id="">路径的长度</h2>
+
+<p>如果您想知道路径，或线条的准确长度，可以借助JavaScript获取，如下面的代码：</p>
+
+<pre><code>var path = document.querySelector('path');
+var length = path.getTotalLength();
+</code></pre>
+
+<hr>
+
+<h2 id="svgps">制作svg的ps插件</h2>
+
+<p>将ps中的矢量文件导出为svg格式文件：
+<a href="https://github.com/janily/svgartisan">https://github.com/janily/svgartisan</a></p>
+
+<hr>
+
+<h2 id="">案例</h2>
+
+<pre><code>.path{
+    stroke-dashoffset: 660;
+    stroke-dasharray: 660;
+    animation:draw 4s linear infinite;
+}
+@keyframes draw{
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+</code></pre>
+
+<p><svg height="179px" width="300px">
+        <path class="path" stroke-linecap="butt" stroke-linejoin="miter" d="M104.452,55.015 C77.473,0 0.78399999999999,12.836 0.279,76.689 C0,111.758 36.797,124.867 61.297,138.887 C85.053,152.483 101.961,171.082 104.611,179 C106.879,171.242 125.712,152.117 147.703,138.506 C171.749,123.625 209,111.377 208.72,76.308 C208.213,12.297 130.191,2.19399999999999 104.452,55.015 Z "></path>
+</svg></p>
+
+<style>
+        .path{
+            stroke-dashoffset: 660;
+            stroke-dasharray: 660;
+            width: 100%;
+            stroke: pink;
+            stroke-width: 2px;
+            fill: none;
+            animation:draw 4s linear infinite;
+        }
+        @keyframes draw{
+            100% {
+                stroke-dashoffset: 0;
+                }
+            }
+    </style>
+
+<p><a href="http://cssdeck.com/labs/ironman-svg-line-animation">DEMO1</a>
+<a href="http://output.jsbin.com/lafaqi/1/">DEMO2</a></p>
+
+<hr>
+
+<h2 id="">兼容性</h2>
+
+<p>IE10+下没有动画效果，animation中不支持stroke相关属性的动画。</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "svg.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>
